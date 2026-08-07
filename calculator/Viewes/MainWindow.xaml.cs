@@ -20,5 +20,9 @@ namespace calculator
         {
             InitializeComponent();
         }
+        private void Window_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            
+        }
     }
 }
