@@ -1,22 +1,288 @@
-﻿<Window x:Class="calculator.MainWindow"
+<Window x:Class="calculator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:calculator"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         PreviewTextInput="Window_PreviewTextInput"
         WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d"
-        Title="Калькулятор" Height="550" Width="450"> 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="CanResize"
+        MinWidth="460"
+        MinHeight="620"
+        Title="Калькулятор"
+        Height="680"
+        Width="520"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        mc:Ignorable="d">
 
+    
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="70"
+                            ResizeBorderThickness="8"
+                            GlassFrameThickness="0"
+                            CornerRadius="0"
+                            UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <DropShadowEffect x:Key="WindowShadow"
+                          BlurRadius="32"
+                          Direction="270"
+                          ShadowDepth="12"
+                          Color="#526285"
+                          Opacity="0.28" />
+
+        <DropShadowEffect x:Key="CardShadow"
+                          BlurRadius="18"
+                          Direction="270"
+                          ShadowDepth="6"
+                          Color="#8794B7"
+                          Opacity="0.20" />
+
+        <LinearGradientBrush x:Key="WindowSurface" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FAFBFF" Offset="0" />
+            <GradientStop Color="#F2F5FD" Offset="0.55" />
+            <GradientStop Color="#EDF1FA" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="DisplaySurface" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FCFDFF" Offset="0" />
+            <GradientStop Color="#F4F7FC" Offset="0.55" />
+            <GradientStop Color="#EEF2FA" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="KeySurface" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFFF" Offset="0" />
+            <GradientStop Color="#F4F6FB" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="OperatorSurface" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#F9F8FF" Offset="0" />
+            <GradientStop Color="#EEEAFE" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="EqualSurface" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#8B70FF" Offset="0" />
+            <GradientStop Color="#6256EF" Offset="0.58" />
+            <GradientStop Color="#7367F5" Offset="1" />
+        </LinearGradientBrush>
+
+        <Style x:Key="CaptionButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Margin" Value="3,0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Foreground" Value="#28344E" />
+            <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="shell:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CaptionBorder"
+                                CornerRadius="9"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CaptionBorder" Property="Background" Value="#E6EAF5" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="CaptionBorder" Property="Background" Value="#D9DFED" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CalculatorButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Foreground" Value="#293650" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="Background" Value="{StaticResource KeySurface}" />
+            <Setter Property="BorderBrush" Value="#FFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Effect" Value="{StaticResource CardShadow}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="8" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#D9DFF0" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Effect" Value="{x:Null}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OperatorButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource CalculatorButtonStyle}">
+            <Setter Property="Foreground" Value="#6557EF" />
+            <Setter Property="Background" Value="{StaticResource OperatorSurface}" />
+            <Setter Property="BorderBrush" Value="#D6D0FF" />
+            <Setter Property="FontWeight" Value="Normal" />
+        </Style>
+
+        <Style x:Key="EqualButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource CalculatorButtonStyle}">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="{StaticResource EqualSurface}" />
+            <Setter Property="BorderBrush" Value="#9B8CFF" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Effect" Value="{x:Null}" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Основная панель окна -->
+        <Border Margin="26,22"
+                Padding="12"
+                CornerRadius="24"
+                Background="{StaticResource WindowSurface}"
+                BorderBrush="#F9FBFF"
+                BorderThickness="1.5"
+                Effect="{StaticResource WindowShadow}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <!--Панель Tille Bar -->
+                
+                <Grid Grid.Row="0"
+                      Margin="4,0"
+                      MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                    <!-- Панель с элипсами интерфеса -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                        <Ellipse Width="12" Height="12" Fill="#FF675B" Margin="6,0" />
+                        <Ellipse Width="12" Height="12" Fill="#FFBD42" Margin="6,0" />
+                        <Ellipse Width="12" Height="12" Fill="#3BCB78" Margin="6,0" />
+                    </StackPanel>
+
+                    <!-- «Кнопки управления окном» -->
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                        <Button Style="{StaticResource CaptionButtonStyle}"
+                                Content="—"
+                                Click="MinimizeButton_Click" />
+                        <Button Style="{StaticResource CaptionButtonStyle}"
+                                Content="□"
+                                Click="MaximizeButton_Click" />
+                        <Button Style="{StaticResource CaptionButtonStyle}"
+                                Content="×"
+                                FontSize="24"
+                                Click="CloseButton_Click" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Окно вывода результата -->
+
+                <Border Grid.Row="1"
+                        Margin="0,0,0,7"
+                        Padding="20,14"
+                        CornerRadius="17"
+                        Background="{StaticResource DisplaySurface}"
+                        BorderBrush="#DDE3F0"
+                        BorderThickness="1"
+                        Effect="{StaticResource CardShadow}">
+                    <Grid>
+
+                        <TextBlock Text=""
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Foreground="#26324C"
+                                   FontFamily="Segoe UI"
+                                   FontSize="58"
+                                   FontWeight="Light" />
+                    </Grid>
+                </Border>
+
+                
+                <Grid Grid.Row="2" Margin="-5,4,-5,-5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Кнопки калькулятора -->
+
+                    <Button Grid.Row="0" Grid.Column="0" Content="AC" Style="{StaticResource OperatorButtonStyle}" />
+                    <Button Grid.Row="0" Grid.Column="1" Content="+/−" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="0" Grid.Column="2" Content="%" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="0" Grid.Column="3" Content="÷" Style="{StaticResource OperatorButtonStyle}" />
+
+                    <Button Grid.Row="1" Grid.Column="0" Content="7" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="8" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="1" Grid.Column="2" Content="9" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="1" Grid.Column="3" Content="×" Style="{StaticResource OperatorButtonStyle}" />
+
+                    <Button Grid.Row="2" Grid.Column="0" Content="4" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="2" Grid.Column="1" Content="5" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="2" Grid.Column="2" Content="6" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="2" Grid.Column="3" Content="−" Style="{StaticResource OperatorButtonStyle}" />
+
+                    <Button Grid.Row="3" Grid.Column="0" Content="1" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="3" Grid.Column="1" Content="2" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="3" Grid.Column="2" Content="3" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="3" Grid.Column="3" Content="+" Style="{StaticResource OperatorButtonStyle}" />
+
+                    <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="0" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="4" Grid.Column="2" Content="·" Style="{StaticResource CalculatorButtonStyle}" />
+                    <Button Grid.Row="4" Grid.Column="3" Content="=" Style="{StaticResource EqualButtonStyle}" />
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
