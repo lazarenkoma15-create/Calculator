@@ -1,0 +1,122 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework">
+    <!-- Компактные кнопки управления окном: свернуть, развернуть и закрыть. -->
+    <Style x:Key="CaptionButtonStyle" TargetType="Button">
+        <!-- Базовые размеры и внешний вид кнопок заголовка. -->
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Margin" Value="3,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Foreground" Value="#28344E" />
+        <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="shell:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+
+        <!-- Шаблон рисует скруглённую область вокруг символа кнопки. -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="CaptionBorder"
+                            CornerRadius="9"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+
+                    <!-- Цвет фона меняется при наведении и нажатии. -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CaptionBorder"
+                                    Property="Background"
+                                    Value="#E6EAF5" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="CaptionBorder"
+                                    Property="Background"
+                                    Value="#D9DFED" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Базовый стиль всех цифровых и служебных клавиш калькулятора. -->
+    <Style x:Key="CalculatorButtonStyle" TargetType="Button">
+        <!-- Общая типографика, поверхность, граница и тень клавиши. -->
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Background" Value="{StaticResource KeySurface}" />
+        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Effect" Value="{StaticResource CardShadow}" />
+
+        <!-- Шаблон отвечает за форму клавиши и анимацию нажатия. -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="ButtonBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="14"
+                            RenderTransformOrigin="0.5,0.5">
+                        <Border.RenderTransform>
+                            <ScaleTransform />
+                        </Border.RenderTransform>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Margin="8" />
+                    </Border>
+
+                    <!-- Состояния наведения и нажатия дают визуальную обратную связь. -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonBorder"
+                                    Property="BorderBrush"
+                                    Value="#D9DFF0" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ButtonBorder"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.97" ScaleY="0.97" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Effect" Value="{x:Null}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Вариант базовой клавиши для арифметических операций и очистки. -->
+    <Style x:Key="OperatorButtonStyle"
+           TargetType="Button"
+           BasedOn="{StaticResource CalculatorButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource OperatorTextBrush}" />
+        <Setter Property="Background" Value="{StaticResource OperatorSurface}" />
+        <Setter Property="BorderBrush" Value="{StaticResource OperatorBorderBrush}" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <!-- Акцентный вариант клавиши, запускающей вычисление результата. -->
+    <Style x:Key="EqualButtonStyle"
+           TargetType="Button"
+           BasedOn="{StaticResource CalculatorButtonStyle}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{StaticResource EqualSurface}" />
+        <Setter Property="BorderBrush" Value="{StaticResource EqualBorderBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Effect" Value="{x:Null}" />
+    </Style>
+</ResourceDictionary>

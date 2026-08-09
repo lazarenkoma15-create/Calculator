@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Основные параметры WPF-приложения. -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
@@ -8,8 +9,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <!-- Тестовые исходники исключены из сборки пользовательского приложения. -->
   <ItemGroup>
-    <Folder Include="Service\" />
+    <Compile Remove="Tests\**\*.cs" />
   </ItemGroup>
 
 </Project>
